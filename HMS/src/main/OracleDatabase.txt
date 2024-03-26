@@ -1,0 +1,138 @@
+
+
+*******************************user_dbs**************************************
+SQL>  CREATE SEQUENCE user_db_seq
+  2  START WITH 1
+  3  INCREMENT BY 1;
+
+Sequence created.
+
+SQL> CREATE TABLE user_dbs (
+  2      id NUMBER PRIMARY KEY,
+  3      full_name VARCHAR2(100) NOT NULL,
+  4      email VARCHAR2(100) NOT NULL,
+  5      password VARCHAR2(100) NOT NULL
+  6  );
+
+Table created.
+
+SQL> CREATE OR REPLACE TRIGGER user_db_trigger
+  2  BEFORE INSERT ON user_dbs
+  3  FOR EACH ROW
+  4  BEGIN
+  5      SELECT user_db_seq.NEXTVAL INTO :new.id FROM dual;
+  6  END;
+  7  /
+
+Trigger created.
+*******************XXXXXXXXXXXXXXXXXXXXXX*******************************
+
+
+******************************specialist **************************************
+SQL> CREATE SEQUENCE specialist_seq
+  2  START WITH 1
+  3  INCREMENT BY 1
+  4  NOCACHE;
+
+Sequence created.
+
+
+SQL> CREATE TABLE specialist (
+  2      id NUMBER PRIMARY KEY,
+  3      specialist_name VARCHAR2(255) NOT NULL
+  4  );
+
+Table created.
+
+
+SQL> CREATE OR REPLACE TRIGGER specialist_trigger
+  2  BEFORE INSERT ON specialist
+  3  FOR EACH ROW
+  4  BEGIN
+  5      SELECT specialist_seq.nextval
+  6      INTO :new.id
+  7      FROM dual;
+  8  END;
+  9  /
+
+Trigger created.
+*******************XXXXXXXXXXXXXXXXXXXXXX*******************************
+
+
+****************************** doctor **************************************
+SQL> CREATE SEQUENCE doctor_id_seq
+  2  START WITH 1
+  3  INCREMENT BY 1
+  4  NOCACHE;
+
+Sequence created.
+
+SQL> CREATE TABLE doctor (
+  2      id NUMBER PRIMARY KEY,
+  3      fullName VARCHAR2(255) NOT NULL,
+  4      dateOfBirth DATE NOT NULL,
+  5      qualification VARCHAR2(255) NOT NULL,
+  6      specialist VARCHAR2(255) NOT NULL,
+  7      email VARCHAR2(255) NOT NULL,
+  8      phone VARCHAR2(20) NOT NULL,
+  9      password VARCHAR2(255) NOT NULL
+ 10  );
+
+Table created.
+
+SQL> CREATE OR REPLACE TRIGGER doctor_id_trigger
+  2  BEFORE INSERT ON doctor
+  3  FOR EACH ROW
+  4  BEGIN
+  5      SELECT doctor_id_seq.nextval INTO :new.id FROM dual;
+  6  END;
+  7  /
+
+Trigger created.
+
+*******************XXXXXXXXXXXXXXXXXXXXXX*******************************
+
+****************************** appointment **************************************
+
+
+CREATE SEQUENCE appointment_id_seq
+  2  START WITH 1
+  3  INCREMENT BY 1
+  4  NOCACHE;
+
+Sequence created.
+
+SQL> CREATE TABLE appointment (
+  2      id NUMBER PRIMARY KEY,
+  3      user_id NUMBER NOT NULL,
+  4      fullname VARCHAR2(45) NOT NULL,
+  5      gender VARCHAR2(45) NOT NULL,
+  6      age VARCHAR2(45) NOT NULL,
+  7      appoint_Date VARCHAR2(45) NOT NULL,
+  8      email VARCHAR2(45) NOT NULL,
+  9      phno VARCHAR2(45) NOT NULL,
+ 10      diseases VARCHAR2(45) NOT NULL,
+ 11      doctor_id NUMBER NOT NULL,
+ 12      address VARCHAR2(450) NOT NULL,
+ 13      status VARCHAR2(450) NOT NULL,
+ 14      CONSTRAINT fk_user_id FOREIGN KEY (user_id)
+ 15          REFERENCES user_dbs(id)
+ 16          ON DELETE CASCADE,
+ 17      CONSTRAINT fk_doctor_id FOREIGN KEY (doctor_id)
+ 18          REFERENCES doctor(id)
+ 19          ON DELETE CASCADE
+ 20  );
+
+Table created.
+
+SQL> CREATE TRIGGER appointment_trigger
+  2  BEFORE INSERT ON appointment
+  3  FOR EACH ROW
+  4  BEGIN
+  5      SELECT appointment_id_seq.NEXTVAL INTO :NEW.id FROM DUAL;
+  6  END;
+  7  /
+
+Trigger created.
+
+*******************XXXXXXXXXXXXXXXXXXXXXX*******************************
